@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>if__settings_80981.png</file>
+        <file>KABAN.png</file>
+    </qresource>
+    <qresource prefix="/new/Font">
+        <file>NotoSansKR.otf</file>
+    </qresource>
+</RCC>

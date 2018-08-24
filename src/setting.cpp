@@ -17,6 +17,14 @@ setting::setting(MainWindow &ref,QWidget *parent) :
         ui->AutoStart->setChecked(true);
     }
 
+    if(Windoref.setData.TextBold == 1){
+        ui->Bold->setChecked(true);
+    }
+
+    if(Windoref.setData.AlwaysOnTop == 1){
+        ui->AlwaysOnTop->setChecked(true);
+    }
+
     initialSet = true;
 
     this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
@@ -70,6 +78,9 @@ void setting::on_FontSize_valueChanged(int arg1)
 void setting::on_FontColorBtn_clicked(bool checked)
 {
     QString color = ui->FontColor->text();
+    if(color.at(0)!='#') {
+        color = '#' + color;
+    }
     Windoref.SetFontColor(color);
     Windoref.setData.TextColor = color;
     Windoref.setData.SAVE();
@@ -95,6 +106,60 @@ void setting::on_AutoStart_stateChanged(int arg1)
             Windoref.setData.SAVE();
             QFile file(startDir);
             file.remove();
+        }
+    }
+}
+
+void setting::on_Bold_stateChanged(int arg1)
+{
+    if(initialSet == true){
+        if(Windoref.setData.TextBold == 0)
+        {
+            Windoref.setData.TextBold = 1;
+            Windoref.setData.SAVE();
+            Windoref.SetFontBold(Windoref.setData.TextBold);
+        }
+        else
+        {
+            Windoref.setData.TextBold = 0;
+            Windoref.setData.SAVE();
+            Windoref.SetFontBold(Windoref.setData.TextBold);
+        }
+    }
+}
+
+#include <QMessageBox>
+void setting::on_BackColorBtn_clicked()
+{
+    QString color = ui->BackColor->text();
+    if(color == "x" || color == "X") {
+        Windoref.setData.BackColor = color;
+        Windoref.setData.SAVE();
+        QMessageBox::information(this,"information","Please Restart Program","OK");
+        return;
+    }
+    else {
+        if(color.at(0)!='#') {
+            color = '#' + color;
+        }
+        Windoref.SetBackColor(color);
+        Windoref.setData.BackColor = color;
+        Windoref.setData.SAVE();
+    }
+}
+
+void setting::on_AlwaysOnTop_stateChanged(int arg1)
+{
+    if(initialSet == true) {
+        if(Windoref.setData.AlwaysOnTop == 0) {
+            Windoref.setData.AlwaysOnTop = 1;
+            Windoref.setData.SAVE();
+            QMessageBox::information(this,"information","Please Restart Program","OK");
+        }
+        else {
+            Windoref.setData.AlwaysOnTop = 0;
+            Windoref.setData.SAVE();
+            QMessageBox::information(this,"information","Please Restart Program","OK");
         }
     }
 }

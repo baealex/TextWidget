@@ -57,6 +57,8 @@ public:
     int Speed;
     int TextSize;
     QString TextColor;
+    QString BackColor;
+    int TextBold;
     SettingData(){
         file = new QFile;
         file->setFileName("USerconfig.dll");
@@ -71,6 +73,8 @@ public:
             Speed = 50;
             TextSize = 12;
             TextColor = "#000000";
+            BackColor = "x";
+            TextBold = 0;
         }
         else
         {
@@ -82,7 +86,7 @@ public:
         QTextStream out(file);
         out << AlwaysOnTop << "\n" << StartUp << "\n"
             << PosX << "\n" << PosY << "\n" << Width << "\n" << Height << "\n"
-            << Speed << "\n" << TextSize << "\n" << TextColor;
+            << Speed << "\n" << TextSize << "\n" << TextColor << "\n" << BackColor << "\n" << TextBold;
         file->close();
     }
     void LOAD(){
@@ -97,6 +101,8 @@ public:
          Speed = in.readLine().toInt();
          TextSize = in.readLine().toInt();
          TextColor = in.readLine();
+         BackColor = in.readLine();
+         TextBold = in.readLine().toInt();
          file->close();
     }
     ~SettingData(){

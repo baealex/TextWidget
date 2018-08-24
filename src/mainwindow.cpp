@@ -8,8 +8,19 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    setWindowFlags(Qt::FramelessWindowHint);
-    setAttribute(Qt::WA_TranslucentBackground,true);
+    if(setData.AlwaysOnTop == 1) {
+        this-> setWindowFlags(Qt :: FramelessWindowHint | Qt :: WindowStaysOnTopHint);
+    }
+    else {
+        this-> setWindowFlags(Qt :: FramelessWindowHint);
+    }
+
+    if(setData.BackColor=="x" || setData.BackColor=="X") {
+        setAttribute(Qt::WA_TranslucentBackground,true);
+    }
+    else {
+        SetBackColor(setData.BackColor);
+    }
 
     rec = QApplication::desktop()->screenGeometry();
 
@@ -18,10 +29,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     TextLoading();
     SetLoading();
-
-    setSpeed(setData.Speed);
-    setPos(setData.PosX, setData.PosY);
-    setSize(setData.Width, setData.Height);
 
     new QShortcut(QKeySequence(Qt::Key_Up), this, SLOT(moveUp()));
     new QShortcut(QKeySequence(Qt::Key_Down), this, SLOT(moveDown()));
@@ -98,7 +105,12 @@ void MainWindow::FontResize(int s)
 
 void MainWindow::SetFontColor(QString color)
 {
-    if(color=="#FFFFFF" || color=="#ffffff")
+    ui->label->setStyleSheet("color:"+color);
+}
+
+void MainWindow::SetFontBold(int mBool)
+{
+    if(mBool==1)
     {
         font.setBold(true);
         ui->label->setFont(font);
@@ -108,7 +120,11 @@ void MainWindow::SetFontColor(QString color)
         font.setBold(false);
         ui->label->setFont(font);
     }
-    ui->label->setStyleSheet("color:"+color);
+}
+
+void MainWindow::SetBackColor(QString color)
+{
+    this->setStyleSheet("background-color:"+color);
 }
 
 void MainWindow::SetLoading()
@@ -116,6 +132,9 @@ void MainWindow::SetLoading()
     setSpeed(setData.Speed);
     FontResize(setData.TextSize);
     SetFontColor(setData.TextColor);
+    setPos(setData.PosX, setData.PosY);
+    setSize(setData.Width, setData.Height);
+    SetFontBold(setData.TextBold);
 }
 
 void MainWindow::moveUp()

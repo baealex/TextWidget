@@ -30,7 +30,7 @@ private:
     QFont font;
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent=0);
     ~MainWindow();
 
     Ui::MainWindow *ui;
@@ -42,6 +42,8 @@ public:
     void setSpeed(int s);
     void FontResize(int s);
     void SetFontColor(QString color);
+    void SetFontBold(int mBool);
+    void SetBackColor(QString color);
     int getSpeed();
 
 private slots:

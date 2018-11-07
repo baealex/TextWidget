@@ -11,13 +11,13 @@ Windows x64 :
 
 ## 상세 설명
 
-![1](https://user-images.githubusercontent.com/35596687/48127782-ea2d3280-e2c7-11e8-8608-34ecf38f7604.gif)
+![1](https://user-images.githubusercontent.com/35596687/48127923-485a1580-e2c8-11e8-85e1-513b9731b47a.jpg)
 
 프로그램 기본 레이아웃 입니다.
 
 <br/>
 
-![2](https://user-images.githubusercontent.com/35596687/48127784-ea2d3280-e2c7-11e8-9d8b-4ca47ad74de1.gif)
+![2](https://user-images.githubusercontent.com/35596687/48127924-48f2ac00-e2c8-11e8-8ef9-e56b025b8e7f.gif)
 
 추가 기능(스크롤) 입니다.
 

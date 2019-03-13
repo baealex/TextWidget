@@ -71,4 +71,4 @@ Ctrl + X : 텍스트를 아래 페이지로 내림
 
 ## 정보
 
-Jino Bae. – [BLOG](http://baealex.tistory.com) – bae_alex@naver.com
+Jino Bae. – [BLOG](https://baejino.com) – im@baejino.com

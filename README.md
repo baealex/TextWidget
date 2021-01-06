@@ -1,4 +1,4 @@
-# 텍스트 위젯
+# TextWidget
 
 > 텍스트를 바탕화면에 심플하게 띄우는 위젯
 
@@ -24,21 +24,17 @@ Windows 7+ x64 : [TextWidget_x64.zip](https://www.dropbox.com/sh/g10z7q7ecs8fab9
 
 ## 사용 예제
 
-프로그램이 활성화(포커스)된 상태에서 사용할 수 있는 단축키
+Shortcuts available when the program is active (focused)
 
-Ctrl + E : 텍스트 파일의 링크 및 방향키로 폼을 움직이는 속도, 자동시작, 폰트 사이즈와 색상을 'E'dit
+- `Ctrl` + `R` : Text File 'R'eload
+- `Ctrl` + `E` : Text File 'E'dit (Open on operating system)
+- `Ctrl` + `O` : Text File 'O'pen (Specify the text shown on the widget)
+- `Ctrl` + `I` : User 'I'nterface Edit
+- `Ctrl` + `Z` : Scroll Up
+- `Ctrl` + `X` : Scroll Down
+- `←` `↑` `↓` `→` : Window Move (This shortcut is supported because you can change the location of text with your mouse, but it is inconvenient to press the text correctly.)
 
-Ctrl + O : 현재 링크된 텍스트 파일을 'O'pen
-
-Ctrl + R : 편집된 텍스트 파일을 'R'eload
-
-Ctrl + Z : 텍스트를 위 페이지로 올림
-
-Ctrl + X : 텍스트를 아래 페이지로 내림
-
-마우스로 텍스트의 위치를 변경할 수 있으나 정확하게 텍스트를 눌러야 하는 불편함이 있으므로 추가적으로 (←↑↓→)키를 이용하여 움직일 수 있음
-
-폼의 크기는 우측하단에서 조정할 수 있음
+The size of the window can be adjusted from the bottom right.
 
 ## 업데이트 내역
 
@@ -68,7 +64,9 @@ Ctrl + X : 텍스트를 아래 페이지로 내림
   - 추가: AlwaysOnTop 기능 (프로그램 재시작 필요)
   - 추가: 텍스트 배경 생삭 지정 (투명설정은 x, X)
   - 수정: 텍스트 굵게 표시를 선택할 수 있음
+- Update 8.1 :
+  - 수정: 코드 컨벤션 수정
 
 ## 정보
 
-Jino Bae. – [BLOG](https://baejino.com) – im@baejino.com
+[Jino Bae](https://baejino.com) – im@baejino.com

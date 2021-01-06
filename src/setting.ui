@@ -68,14 +68,14 @@
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
-     background-color: #FFBB00;
+     background-color: #474787;
 	border: 1px solid black;
      border-radius: 10px;
 	color: #FFF
 }</string>
    </property>
    <property name="text">
-    <string>SKYLINE Homepage</string>
+    <string>Developer Homepage</string>
    </property>
   </widget>
   <widget class="QLabel" name="kb">
@@ -126,7 +126,7 @@
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
-     background-color: #FFBB00;
+     background-color: #474787;
 	border: 1px solid black;
      border-radius: 10px;
 	color: #FFF

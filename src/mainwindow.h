@@ -9,6 +9,7 @@
 #include <QPropertyAnimation>
 #include <QFontDatabase>
 #include <QDesktopServices>
+#include <QTimer>
 
 #include "fileio.h"
 
@@ -21,45 +22,51 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 private:
-    int posX;
-    int posY;
-    int Width;
-    int Height;
-    int Speed;
-    QRect rec;
+    int windowPosX;
+    int windowPosY;
+    int windowWidth;
+    int windowHeight;
+    int moveSpeed;
+
+    QRect rect;
     QFont font;
+
+    bool isMouseDown;
 
 public:
     explicit MainWindow(QWidget *parent=0);
     ~MainWindow();
 
     Ui::MainWindow *ui;
-    SettingData setData;
-    TextLink Link;
+    Config config;
+    TextLink textLink;
 
-    void setSize(int w, int h);
-    void setPos(int x, int y);
-    void setSpeed(int s);
-    void FontResize(int s);
-    void SetFontColor(QString color);
-    void SetFontBold(int mBool);
-    void SetBackColor(QString color);
-    int getSpeed();
+    QString openTextSelector();
+    QString readTextFile(QString fileName);
+
+    void setWindowSize(int weight, int height);
+    void setWindowPos(int x, int y);
+    void setMoveSpeed(int speed);
+    void setFontSize(int size);
+    void setFontColor(QString color);
+    void setBackColor(QString color);
+    void setFontBold(int isTextBold);
+
+    int getMoveSpeed();
 
 private slots:
-    void TextLoading();
-    void SetLoading();
-
-    void ReloadText();
-    void Openfile();
+    void loadText();
+    void loadConfig();
+    void openTextFileSlot();
+    void openTextSeletorSlot();
 
     void moveUp();
     void moveDown();
     void moveLeft();
     void moveRight();
-    void PageUp();
-    void PageDown();
-    void Edit();
+    void scrollUp();
+    void scrollDown();
+    void openSetting();
 
 protected:
    void resizeEvent(QResizeEvent *event);

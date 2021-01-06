@@ -2,26 +2,26 @@
 #include "ui_setting.h"
 #include  "ui_mainwindow.h"
 
-setting::setting(MainWindow &ref,QWidget *parent) :
+setting::setting(MainWindow &ref, QWidget *parent) :
     QDialog(parent),
-    Windoref(ref),
+    windoRef(ref),
     ui(new Ui::setting)
 {
     ui->setupUi(this);
-    ui->FontSize->setValue(Windoref.setData.TextSize);
-    ui->MoveSpeed->setValue(Windoref.setData.Speed);
+    ui->FontSize->setValue(windoRef.config.textSize);
+    ui->MoveSpeed->setValue(windoRef.config.moveSpeed);
 
     initialSet = false;
 
-    if(Windoref.setData.StartUp == 1){
+    if(windoRef.config.isStartUp == true){
         ui->AutoStart->setChecked(true);
     }
 
-    if(Windoref.setData.TextBold == 1){
+    if(windoRef.config.isTextBold == true){
         ui->Bold->setChecked(true);
     }
 
-    if(Windoref.setData.AlwaysOnTop == 1){
+    if(windoRef.config.isAlwaysOnTop == true){
         ui->AlwaysOnTop->setChecked(true);
     }
 
@@ -38,41 +38,30 @@ setting::~setting()
 
 void setting::on_textChanger_clicked()
 {
-    QFile *file = new QFile;
-    QString name = QFileDialog::getOpenFileName(this,
-                                                "Select text file.",
-                                                "",
-                                                tr("Text files (*.txt) ;; Source files(*.c *.cpp *.java *.h)"));
-    file->setFileName(name);
-    file->open(QIODevice::ReadOnly);
-    QTextStream in(file);
-    in.setCodec("UTF-8");
-    in.setCodec("Windows-949");
-    QString mText = in.readAll();
-    file->close();
-    Windoref.ui->label->setText(mText);
-
-    Windoref.Link.setLink(name);
-    Windoref.Link.SAVE();
+    QString fileName = windoRef.openTextSelector();
+    QString text = windoRef.readTextFile(fileName);
+    windoRef.ui->label->setText(text);
+    windoRef.textLink.setLink(fileName);
+    windoRef.textLink.save();
 }
 
 void setting::on_Homepage_clicked()
 {
-    QDesktopServices::openUrl(QUrl("http://baealex.tistory.com"));
+    QDesktopServices::openUrl(QUrl("https://baejino.com"));
 }
 
 void setting::on_MoveSpeed_sliderMoved(int position)
 {
-    Windoref.setSpeed(position);
-    Windoref.setData.Speed = position;
-    Windoref.setData.SAVE();
+    windoRef.setMoveSpeed(position);
+    windoRef.config.moveSpeed = position;
+    windoRef.config.save();
 }
 
 void setting::on_FontSize_valueChanged(int arg1)
 {
-    Windoref.FontResize(arg1);
-    Windoref.setData.TextSize = arg1;
-    Windoref.setData.SAVE();
+    windoRef.setFontSize(arg1);
+    windoRef.config.textSize = arg1;
+    windoRef.config.save();
 }
 
 void setting::on_FontColorBtn_clicked(bool checked)
@@ -81,9 +70,9 @@ void setting::on_FontColorBtn_clicked(bool checked)
     if(color.at(0)!='#') {
         color = '#' + color;
     }
-    Windoref.SetFontColor(color);
-    Windoref.setData.TextColor = color;
-    Windoref.setData.SAVE();
+    windoRef.setFontColor(color);
+    windoRef.config.textColor = color;
+    windoRef.config.save();
 }
 
 void setting::on_AutoStart_stateChanged(int arg1)
@@ -91,19 +80,19 @@ void setting::on_AutoStart_stateChanged(int arg1)
     if(initialSet == true){
         QFileInfo fileInfo(QCoreApplication::applicationFilePath());
         QString startDir = QStandardPaths::writableLocation(QStandardPaths::ApplicationsLocation)
-                + QDir::separator() + "Startup"
-                + QDir::separator() + fileInfo.completeBaseName() + ".lnk";
+            + QDir::separator() + "Startup"
+            + QDir::separator() + fileInfo.completeBaseName() + ".lnk";
 
-        if(Windoref.setData.StartUp == 0)
+        if(windoRef.config.isStartUp == false)
         {
-            Windoref.setData.StartUp = 1;
-            Windoref.setData.SAVE();
+            windoRef.config.isStartUp = true;
+            windoRef.config.save();
             QFile::link(QCoreApplication::applicationFilePath(),startDir);
         }
         else
         {
-            Windoref.setData.StartUp = 0;
-            Windoref.setData.SAVE();
+            windoRef.config.isStartUp = false;
+            windoRef.config.save();
             QFile file(startDir);
             file.remove();
         }
@@ -113,17 +102,17 @@ void setting::on_AutoStart_stateChanged(int arg1)
 void setting::on_Bold_stateChanged(int arg1)
 {
     if(initialSet == true){
-        if(Windoref.setData.TextBold == 0)
+        if(windoRef.config.isTextBold == false)
         {
-            Windoref.setData.TextBold = 1;
-            Windoref.setData.SAVE();
-            Windoref.SetFontBold(Windoref.setData.TextBold);
+            windoRef.config.isTextBold = true;
+            windoRef.config.save();
+            windoRef.setFontBold(windoRef.config.isTextBold);
         }
         else
         {
-            Windoref.setData.TextBold = 0;
-            Windoref.setData.SAVE();
-            Windoref.SetFontBold(Windoref.setData.TextBold);
+            windoRef.config.isTextBold = false;
+            windoRef.config.save();
+            windoRef.setFontBold(windoRef.config.isTextBold);
         }
     }
 }
@@ -133,33 +122,33 @@ void setting::on_BackColorBtn_clicked()
 {
     QString color = ui->BackColor->text();
     if(color == "x" || color == "X") {
-        Windoref.setData.BackColor = color;
-        Windoref.setData.SAVE();
-        QMessageBox::information(this,"information","Please Restart Program","OK");
+        windoRef.config.backColor = color;
+        windoRef.config.save();
+        QMessageBox::information(this, tr("information"), tr("Please Restart Program"), tr("OK"));
         return;
     }
     else {
         if(color.at(0)!='#') {
             color = '#' + color;
         }
-        Windoref.SetBackColor(color);
-        Windoref.setData.BackColor = color;
-        Windoref.setData.SAVE();
+        windoRef.setBackColor(color);
+        windoRef.config.backColor = color;
+        windoRef.config.save();
     }
 }
 
 void setting::on_AlwaysOnTop_stateChanged(int arg1)
 {
     if(initialSet == true) {
-        if(Windoref.setData.AlwaysOnTop == 0) {
-            Windoref.setData.AlwaysOnTop = 1;
-            Windoref.setData.SAVE();
-            QMessageBox::information(this,"information","Please Restart Program","OK");
+        if(windoRef.config.isAlwaysOnTop == false) {
+            windoRef.config.isAlwaysOnTop = true;
+            windoRef.config.save();
+            QMessageBox::information(this, tr("information"), tr("Please Restart Program"), tr("OK"));
         }
         else {
-            Windoref.setData.AlwaysOnTop = 0;
-            Windoref.setData.SAVE();
-            QMessageBox::information(this,"information","Please Restart Program","OK");
+            windoRef.config.isAlwaysOnTop = false;
+            windoRef.config.save();
+            QMessageBox::information(this, tr("information"), tr("Please Restart Program"), tr("OK"));
         }
     }
 }

@@ -29,12 +29,11 @@ private slots:
     void on_AutoStart_stateChanged(int arg1);
     void on_Bold_stateChanged(int arg1);
     void on_BackColorBtn_clicked();
-
     void on_AlwaysOnTop_stateChanged(int arg1);
 
 private:
     Ui::setting *ui;
-    MainWindow &Windoref;
+    MainWindow &windoRef;
     bool initialSet;
 };
 

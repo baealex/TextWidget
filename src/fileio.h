@@ -4,108 +4,128 @@
 #include <QTextStream>
 #include <QFile>
 
-class TextLink{
+class TextLink {
 private:
-    QString LINK;
+    QString link;
     QFile *file;
+
 public:
-    TextLink(){
-        file = new QFile;
-        file->setFileName("TextLink.txt");
+    TextLink() {
+        file = new QFile("temp.txt");
         if(file->open(QIODevice::ReadOnly | QIODevice::Text))
         {
-            LOAD();
+            load();
         }
+        file->close();
     }
-    void setLink(QString Temp){
-        LINK = Temp;
+
+    void setLink(QString link){
+        this->link = link;
     }
+
     QString getLink(){
-        return LINK;
+        return this->link;
     }
-    void SAVE()
+
+    void save()
     {
         file->open(QIODevice::WriteOnly);
         QTextStream out(file);
         out.setCodec("UTF-8");
-        out << LINK;
+        out.setCodec("Windows-949");
+        out << this->link;
         file->close();
     }
-    void LOAD()
+
+    void load()
     {
         file->open(QIODevice::ReadOnly);
         QTextStream in(file);
         in.setCodec("UTF-8");
-        LINK = in.readAll();
+        in.setCodec("Windows-949");
+        this->link = in.readAll();
         file->close();
     }
+
     ~TextLink(){
         delete file;
     }
 };
 
-class SettingData{
+class Config {
 private:
     QFile *file;
+
 public:
-    int AlwaysOnTop;
-    int StartUp;
-    int PosX;
-    int PosY;
-    int Width;
-    int Height;
-    int Speed;
-    int TextSize;
-    QString TextColor;
-    QString BackColor;
-    int TextBold;
-    SettingData(){
-        file = new QFile;
-        file->setFileName("USerconfig.dll");
+    bool isAlwaysOnTop;
+    bool isStartUp;
+    int windowPosX;
+    int windowPosY;
+    int windowWidth;
+    int windowHeight;
+    int moveSpeed;
+    int textSize;
+    QString textColor;
+    QString backColor;
+    bool isTextBold;
+
+    Config(){
+        file = new QFile("config.conf");
         if(!file->open(QIODevice::ReadOnly | QIODevice::Text))
         {
-            AlwaysOnTop = 0;
-            StartUp = 0;
-            PosX = 100;
-            PosY = 100;
-            Width = 400;
-            Height = 300;
-            Speed = 50;
-            TextSize = 12;
-            TextColor = "#000000";
-            BackColor = "x";
-            TextBold = 0;
+            isAlwaysOnTop = 0;
+            isStartUp = 0;
+            windowPosX = 100;
+            windowPosY = 100;
+            windowWidth = 400;
+            windowHeight = 300;
+            moveSpeed = 50;
+            textSize = 12;
+            textColor = "#000000";
+            backColor = "x";
+            isTextBold = 0;
         }
         else
         {
-            LOAD();
+            load();
         }
     }
-    void SAVE(){
+
+    void save(){
         file->open(QIODevice::WriteOnly);
         QTextStream out(file);
-        out << AlwaysOnTop << "\n" << StartUp << "\n"
-            << PosX << "\n" << PosY << "\n" << Width << "\n" << Height << "\n"
-            << Speed << "\n" << TextSize << "\n" << TextColor << "\n" << BackColor << "\n" << TextBold;
+        out << isAlwaysOnTop << "\n"
+            << isStartUp << "\n"
+            << windowPosX << "\n"
+            << windowPosY << "\n"
+            << windowWidth << "\n"
+            << windowHeight << "\n"
+            << moveSpeed << "\n"
+            << textSize << "\n"
+            << textColor << "\n"
+            << backColor << "\n"
+            << isTextBold;
         file->close();
     }
-    void LOAD(){
-         file->open(QIODevice::ReadOnly);
-         QTextStream in(file);
-         AlwaysOnTop = in.readLine().toInt();
-         StartUp = in.readLine().toInt();
-         PosX = in.readLine().toInt();
-         PosY = in.readLine().toInt();
-         Width = in.readLine().toInt();
-         Height = in.readLine().toInt();
-         Speed = in.readLine().toInt();
-         TextSize = in.readLine().toInt();
-         TextColor = in.readLine();
-         BackColor = in.readLine();
-         TextBold = in.readLine().toInt();
-         file->close();
+
+    void load(){
+        file->open(QIODevice::ReadOnly);
+        QTextStream in(file);
+        isAlwaysOnTop = in.readLine().toInt();
+        isStartUp = in.readLine().toInt();
+        windowPosX = in.readLine().toInt();
+        windowPosY = in.readLine().toInt();
+        windowWidth = in.readLine().toInt();
+        windowHeight = in.readLine().toInt();
+        moveSpeed = in.readLine().toInt();
+        textSize = in.readLine().toInt();
+        textColor = in.readLine();
+        backColor = in.readLine();
+        isTextBold = in.readLine().toInt();
+        file->close();
     }
-    ~SettingData(){
+
+    ~Config(){
         delete file;
     }
 };

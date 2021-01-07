@@ -65,7 +65,10 @@ The size of the window can be adjusted from the bottom right.
   - 추가: 텍스트 배경 생삭 지정 (투명설정은 x, X)
   - 수정: 텍스트 굵게 표시를 선택할 수 있음
 - Update 8.1 :
-  - 수정: 코드 컨벤션 수정
+  - 수정: 코드 컨벤션 업데이트
+- Update 9 :
+  - 추가: 업데이트 체크 버튼 추가
+  - 수정: 후원계좌 이미지 삭제
 
 ## 정보
 

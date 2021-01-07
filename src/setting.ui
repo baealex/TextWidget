@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>260</width>
-    <height>330</height>
+    <height>240</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,13 +19,13 @@
   <property name="minimumSize">
    <size>
     <width>260</width>
-    <height>330</height>
+    <height>240</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>260</width>
-    <height>330</height>
+    <height>240</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -36,6 +36,9 @@
     <normaloff>:/new/prefix1/if__settings_80981.png</normaloff>:/new/prefix1/if__settings_80981.png</iconset>
   </property>
   <widget class="QCheckBox" name="AutoStart">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>160</x>
@@ -51,7 +54,10 @@
     <string>AutoStart</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="Homepage">
+  <widget class="QPushButton" name="UpdateCheck">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -71,42 +77,15 @@
      background-color: #474787;
 	border: 1px solid black;
      border-radius: 10px;
-	color: #FFF
+	color: #fff;
+}
+
+QPushButton:disabled {
+    background-color:#ccc;
 }</string>
    </property>
    <property name="text">
-    <string>Developer Homepage</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="kb">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>240</y>
-     <width>241</width>
-     <height>80</height>
-    </rect>
-   </property>
-   <property name="toolTip">
-    <string/>
-   </property>
-   <property name="statusTip">
-    <string/>
-   </property>
-   <property name="whatsThis">
-    <string/>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="textFormat">
-    <enum>Qt::AutoText</enum>
-   </property>
-   <property name="pixmap">
-    <pixmap resource="resource.qrc">:/new/prefix1/KABAN.png</pixmap>
-   </property>
-   <property name="scaledContents">
-    <bool>true</bool>
+    <string>Check for updates</string>
    </property>
   </widget>
   <widget class="QPushButton" name="textChanger">

@@ -4,10 +4,38 @@
 
 setting::setting(MainWindow &ref, QWidget *parent) :
     QDialog(parent),
-    windoRef(ref),
-    ui(new Ui::setting)
+    ui(new Ui::setting),
+    windoRef(ref)
 {
     ui->setupUi(this);
+
+    manager = new QNetworkAccessManager();
+
+    this->sslConfig = QSslConfiguration::defaultConfiguration();
+    this->sslConfig.setProtocol(QSsl::TlsV1_2);
+
+    this->request.setSslConfiguration(this->sslConfig);
+    this->request.setUrl(QUrl("https://raw.githubusercontent.com/baealex/TextWidget/master/version"));
+
+    connect(manager, &QNetworkAccessManager::finished,
+        this, [=](QNetworkReply *reply) {
+            if (reply->error()) {
+                qDebug() << reply->errorString();
+                return;
+            }
+            QString response = reply->readAll();
+            if(response == appVersion) {
+                QMessageBox::information(this, tr("information"), tr("It's already the latest version."), tr("OK"));
+            } else {
+                QMessageBox::StandardButton reply = QMessageBox::question(this, tr("infomaion"), tr("The current version is ") + appVersion + tr(", and the new version is ") + response + tr(". Do you want a new version?"), QMessageBox::Yes|QMessageBox::No);
+                if(reply == QMessageBox::Yes) {
+                    QDesktopServices::openUrl(QUrl("https://www.dropbox.com/sh/g10z7q7ecs8fab9/AAADWShDyU6-PBkb2bGZc9t8a?dl=1"));
+                }
+            }
+            ui->UpdateCheck->setEnabled(true);
+        }
+    );
+
     ui->FontSize->setValue(windoRef.config.textSize);
     ui->MoveSpeed->setValue(windoRef.config.moveSpeed);
 
@@ -45,11 +73,6 @@ void setting::on_textChanger_clicked()
     windoRef.textLink.save();
 }
 
-void setting::on_Homepage_clicked()
-{
-    QDesktopServices::openUrl(QUrl("https://baejino.com"));
-}
-
 void setting::on_MoveSpeed_sliderMoved(int position)
 {
     windoRef.setMoveSpeed(position);
@@ -66,6 +89,7 @@ void setting::on_FontSize_valueChanged(int arg1)
 
 void setting::on_FontColorBtn_clicked(bool checked)
 {
+    Q_UNUSED(checked)
     QString color = ui->FontColor->text();
     if(color.at(0)!='#') {
         color = '#' + color;
@@ -77,6 +101,7 @@ void setting::on_FontColorBtn_clicked(bool checked)
 
 void setting::on_AutoStart_stateChanged(int arg1)
 {
+    Q_UNUSED(arg1)
     if(initialSet == true){
         QFileInfo fileInfo(QCoreApplication::applicationFilePath());
         QString startDir = QStandardPaths::writableLocation(QStandardPaths::ApplicationsLocation)
@@ -101,6 +126,7 @@ void setting::on_AutoStart_stateChanged(int arg1)
 
 void setting::on_Bold_stateChanged(int arg1)
 {
+    Q_UNUSED(arg1)
     if(initialSet == true){
         if(windoRef.config.isTextBold == false)
         {
@@ -117,7 +143,6 @@ void setting::on_Bold_stateChanged(int arg1)
     }
 }
 
-#include <QMessageBox>
 void setting::on_BackColorBtn_clicked()
 {
     QString color = ui->BackColor->text();
@@ -139,6 +164,7 @@ void setting::on_BackColorBtn_clicked()
 
 void setting::on_AlwaysOnTop_stateChanged(int arg1)
 {
+    Q_UNUSED(arg1)
     if(initialSet == true) {
         if(windoRef.config.isAlwaysOnTop == false) {
             windoRef.config.isAlwaysOnTop = true;
@@ -151,4 +177,10 @@ void setting::on_AlwaysOnTop_stateChanged(int arg1)
             QMessageBox::information(this, tr("information"), tr("Please Restart Program"), tr("OK"));
         }
     }
+}
+
+void setting::on_UpdateCheck_clicked()
+{
+    ui->UpdateCheck->setEnabled(false);
+    manager->get(this->request);
 }

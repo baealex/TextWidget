@@ -28,8 +28,8 @@ private:
     int windowHeight;
     int moveSpeed;
 
-    QRect rect;
-    QFont font;
+    QRect screenRect;
+    QFont widgetFont;
 
     bool isMouseDown;
 

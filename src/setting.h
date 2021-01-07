@@ -3,7 +3,11 @@
 
 #include <QDialog>
 #include <QFileDialog>
+#include <QMessageBox>
 #include <QDesktopServices>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
 
 #include "fileio.h"
 #include  "mainwindow.h"
@@ -22,7 +26,6 @@ public:
 
 private slots:
     void on_textChanger_clicked();
-    void on_Homepage_clicked();
     void on_MoveSpeed_sliderMoved(int position);
     void on_FontSize_valueChanged(int arg1);
     void on_FontColorBtn_clicked(bool checked);
@@ -30,11 +33,18 @@ private slots:
     void on_Bold_stateChanged(int arg1);
     void on_BackColorBtn_clicked();
     void on_AlwaysOnTop_stateChanged(int arg1);
+    void on_UpdateCheck_clicked();
 
 private:
     Ui::setting *ui;
     MainWindow &windoRef;
+
     bool initialSet;
+
+    QNetworkAccessManager *manager;
+    QSslConfiguration sslConfig;
+    QNetworkRequest request;
+    QString appVersion = "9";
 };
 
 #endif // SETTING_H

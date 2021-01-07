@@ -22,9 +22,9 @@ MainWindow::MainWindow(QWidget *parent) :
         this->setBackColor(config.backColor);
     }
 
-    rect = QApplication::desktop()->screenGeometry();
+    screenRect = QApplication::desktop()->screenGeometry();
     int fontId = QFontDatabase::addApplicationFont(":new/Font/NotoSansKR.otf");
-    font.setFamily(QFontDatabase::applicationFontFamilies(fontId).at(0));
+    widgetFont.setFamily(QFontDatabase::applicationFontFamilies(fontId).at(0));
 
     loadText();
     loadConfig();
@@ -125,8 +125,8 @@ void MainWindow::loadText()
 
 void MainWindow::setFontSize(int size)
 {
-    font.setPixelSize(size);
-    ui->label->setFont(font);
+    widgetFont.setPixelSize(size);
+    ui->label->setFont(widgetFont);
 }
 
 void MainWindow::setFontColor(QString color)
@@ -134,23 +134,23 @@ void MainWindow::setFontColor(QString color)
     ui->label->setStyleSheet("color:" + color);
 }
 
-void MainWindow::setFontBold(int mBool)
+void MainWindow::setFontBold(int isBold)
 {
-    if(mBool == true)
+    if(isBold == (int)true)
     {
-        font.setBold(true);
-        ui->label->setFont(font);
+        widgetFont.setBold(true);
+        ui->label->setFont(widgetFont);
     }
     else
     {
-        font.setBold(false);
-        ui->label->setFont(font);
+        widgetFont.setBold(false);
+        ui->label->setFont(widgetFont);
     }
 }
 
 void MainWindow::setBackColor(QString color)
 {
-    this->setStyleSheet("background-color:"+color);
+    this->setStyleSheet("background-color:" + color);
 }
 
 void MainWindow::loadConfig()
@@ -178,7 +178,7 @@ void MainWindow::moveUp()
 
 void MainWindow::moveDown()
 {
-    if(windowPosY < rect.height() - this->geometry().height())
+    if(windowPosY < screenRect.height() - this->geometry().height())
     {
         windowPosY += moveSpeed;
         move(windowPosX, windowPosY);
@@ -204,7 +204,7 @@ void MainWindow::moveLeft()
 
 void MainWindow::moveRight()
 {
-    if(windowPosY < rect.width() - this->geometry().width())
+    if(windowPosY < screenRect.width() - this->geometry().width())
     {
         windowPosX += moveSpeed;
         move(windowPosX,windowPosY);
@@ -234,7 +234,7 @@ void MainWindow::scrollUp()
 
 void MainWindow::scrollDown()
 {
-    QPropertyAnimation *textAnimation = new QPropertyAnimation(ui->label,"geometry");
+    QPropertyAnimation *textAnimation = new QPropertyAnimation(ui->label, "geometry");
     textAnimation->setDuration(200);
     textAnimation->setStartValue(QRect(
         ui->label->geometry().x(),
@@ -257,7 +257,8 @@ void MainWindow::openSetting()
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
-    ui->label->setGeometry(QRect(0,0,this->geometry().width(),this->geometry().height()));
+    Q_UNUSED(event)
+    ui->label->setGeometry(QRect(0, 0, this->geometry().width(), this->geometry().height()));
     config.windowHeight = this->geometry().height();
     config.windowWidth = this->geometry().width();
     config.save();
@@ -272,12 +273,13 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event) {
+    Q_UNUSED(event)
     this->isMouseDown = false;
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event) {
     if (isMouseDown == true) {
-        move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
+        move(event->globalX() - m_nMouseClick_X_Coordinate, event->globalY() - m_nMouseClick_Y_Coordinate);
         windowPosX = event->globalX() - m_nMouseClick_X_Coordinate;
         windowPosY = event->globalY() - m_nMouseClick_Y_Coordinate;
         config.windowPosX = windowPosX;
